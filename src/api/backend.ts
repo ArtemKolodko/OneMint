@@ -85,15 +85,17 @@ export const getCollections = async (): Promise<ICollection[]> => {
     return data
 }
 
-export const createCollection = async (params: ICollectionCreate) => {
+export const getCollectionById = async (id: string): Promise<ICollection> => {
+    const {data} = await axios.get(`${config.apiUrl}/v0/collections/${id}`)
+    return data
+}
+
+export const createCollection = async (params: ICollectionCreate): Promise<ICollection> => {
     const body = JSON.stringify(params);
-    const {data, status} = await axios.post(`${config.apiUrl}/v0/collections/all`, body, {
+    const {data} = await axios.post(`${config.apiUrl}/v0/collections/create`, body, {
         headers: {
             "Content-Type": "application/json",
         },
     })
-    return {
-        data,
-        status
-    }
+    return data
 }

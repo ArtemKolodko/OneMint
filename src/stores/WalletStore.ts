@@ -21,7 +21,7 @@ export class WalletStore {
   private onboard: any
   web3: any
   providerName = ''
-  lastUsedAddress = ''
+  lastUsedAddress = '0x95D02e967Dd2D2B1839347e0B84E59136b11A073'
 
   constructor() {
     makeAutoObservable(this)

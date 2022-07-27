@@ -1,10 +1,11 @@
-import {Box, Button, FileInput, TextInput, Text, TextArea} from 'grommet'
+import {Box, Button, FileInput, TextInput, Text, TextArea, Spinner} from 'grommet'
 import React, {useEffect, useState} from 'react'
 import {observer} from "mobx-react";
 import { add } from "../../api/ipfs";
 import { NFTItemPreview } from './NFTItem'
 import {createCollection} from "../../api/backend";
 import styled from "styled-components";
+import {useNavigate} from "react-router-dom";
 
 const InputLabelDescription = styled(Text)`
   font-size: 80%;
@@ -28,9 +29,12 @@ export const CreateNftPage = observer(() => {
     const [amount, setAmount] = useState(1)
     const [price, setPrice] = useState(0)
     const [selectedFile, setSelectedFile] = useState<any>()
+    const [inProgress, setInProgress] = useState(false)
+    let navigate = useNavigate();
 
     const create = async () => {
        try {
+           setInProgress(true)
            const ipfsImg = await add(selectedFile)
            console.log('ipfs img', ipfsImg)
            const result = await createCollection({
@@ -43,12 +47,15 @@ export const CreateNftPage = observer(() => {
                userId: ''
            })
            console.log('result', result)
+           navigate('/explore/collection/' + result.uuid)
        } catch (e) {
            console.log('Cannot create collection', e)
+       } finally {
+           setInProgress(false)
        }
     }
 
-    return <Box>
+    return <Box margin={{ bottom: 'xlarge' }}>
         {/*<Box>*/}
         {/*    {uploadedFiles.map(file => <NFTItemPreview {...file} />)}*/}
         {/*</Box>*/}
@@ -84,10 +91,13 @@ export const CreateNftPage = observer(() => {
             <InputLabel>Price, USD</InputLabel>
             <TextInput placeholder={'1'} onChange={e => setPrice(parseInt(e.target.value))} />
         </Box>
-        <Box margin={{top: 'medium'}}>
-            <Button primary alignSelf={'start'} style={{ padding: '8px 12px' }} onClick={create}>
+        <Box margin={{top: 'medium'}} direction={'row'} gap={'32px'} align={'center'}>
+            <Button primary disabled={inProgress} alignSelf={'start'} style={{ padding: '8px 12px' }} onClick={create}>
                 Create
             </Button>
+            {inProgress &&
+                <Spinner size={'small'} />
+            }
         </Box>
     </Box>
 })

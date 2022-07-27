@@ -1,6 +1,7 @@
 import React from 'react'
 import {Box, Button, Spinner, Text, Image} from "grommet";
 import {ICollection} from "../../api/backend";
+import {CollectionPreview} from "../../components/Collection";
 
 export interface CollectionsListProps {
     isLoading: boolean
@@ -10,36 +11,12 @@ export interface CollectionsListProps {
     openCollection: (id: string) => void
 }
 
-interface CollectionProps {
-    data: ICollection,
-    onClick?: (e) => void
-}
-
-export const Collection = (props: CollectionProps) => {
-    const { data: { title, collectionImage }, onClick } = props
-
-    return <Box width={'300px'} height={'150px'} onClick={onClick}>
-        <Box height={'100px'}>
-            <Image
-                src={collectionImage}
-                width={'100%'}
-                height={'100%'}
-                style={{ objectFit: 'cover', borderTopLeftRadius: '10px', borderTopRightRadius: '10px' }}
-            />
-        </Box>
-        <Box background={'white'} style={{ borderBottomLeftRadius: '10px', borderBottomRightRadius: '10px' }}>
-            <Text size={'large'} weight={'bold'}>
-                {title}
-            </Text>
-        </Box>
-    </Box>
-}
-
 export const CollectionsList = (props: CollectionsListProps) => {
     const { isLoading, loadingError, collections, loadNFT, openCollection } = props
-    return <Box align={'center'}>
+
+    return <Box>
         {isLoading &&
-            <Spinner />
+            <Spinner size={'large'} />
         }
         {!isLoading && loadingError &&
             <Box>
@@ -47,9 +24,14 @@ export const CollectionsList = (props: CollectionsListProps) => {
                 <Button primary alignSelf={'start'} onClick={loadNFT}>Reload</Button>
             </Box>
         }
-        <Box direction={'row'} style={{ maxWidth: '1000px', flexWrap: 'wrap' }}>
+        <Box
+            direction={'row'}
+            gap={'24px'}
+            justify={'center'}
+            style={{ maxWidth: '1000px', flexWrap: 'wrap', rowGap: '24px' }}
+        >
             {collections.map(c => {
-                return <Collection
+                return <CollectionPreview
                     key={c.uuid}
                     data={c}
                     onClick={() => openCollection(c.uuid)}

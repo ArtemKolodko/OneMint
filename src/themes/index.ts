@@ -26,7 +26,7 @@ export const lightTheme = {
             background: '#F2F3F7',
             borderBox: palette.LightGray,
             titleSecondary: palette.LightGray,
-            border: palette.Grey,
+            border: palette.LightGray,
             modalBackground: 'white',
             modalBorder: palette.DarkGrey,
             secondary: '#777777',
@@ -39,11 +39,6 @@ export const lightTheme = {
         }
     },
     button: {
-        // default: {
-        //     background: {
-        //         color: 'transparent'
-        //     }
-        // },
         primary: {
             background: {
                 color: {
@@ -72,6 +67,7 @@ export const lightTheme = {
                 border-color: transparent;
                 
                 span {
+                   font-size: 18px;
                    color: #555555;
                    font-weight: bold;
                 }
@@ -86,6 +82,11 @@ export const lightTheme = {
                 }
             }
         `,
+        },
+        panel: {
+            extend: (props: any) => `
+                
+            `
         }
     },
     layer: {

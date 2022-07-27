@@ -12,7 +12,7 @@ export class ConfigStore {
         this.init()
     }
 
-    public themeMode: AppTheme = 'dark'
+    public themeMode: AppTheme = 'light'
 
     init () {
         const theme = this.getStorageKey(StorageKey.latestTheme)
